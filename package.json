@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/dannysmith/eurotas#readme",
   "dependencies": {
-    "gith": "^1.0.4",
+    "express": "^4.14.0",
     "github-webhook-handler": "^0.6.0",
     "mongoose": "^4.5.5"
   }
