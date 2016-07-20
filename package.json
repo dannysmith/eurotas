@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/dannysmith/eurotas#readme",
   "dependencies": {
+    "gith": "^1.0.4",
     "github-webhook-handler": "^0.6.0"
   }
 }
