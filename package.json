@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dannysmith/eurotas/issues"
   },
-  "homepage": "https://github.com/dannysmith/eurotas#readme"
+  "homepage": "https://github.com/dannysmith/eurotas#readme",
+  "dependencies": {
+    "github-webhook-handler": "^0.6.0"
+  }
 }

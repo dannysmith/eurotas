@@ -1,27 +1,24 @@
-// EXTERNAL REQUIREMENTS
-var express = require("express"),
-    morgan = require("morgan"),
-    rp = require("request-promise"),
-    cors = require("cors");
+var http = require("http"),
+    createHandler = require("github-webhook-handler");
 
-// INTERNAL REQUIREMENTS
-var config = require("config");
+var config = require("./config");
 
-// INITIALISE APP
-var app = express();
-var router = express.Router();
+var handler = createHandler({
+  path: "/webhook",
+  secret: config.github.webhookSecret
+});
 
-// MIDDLEWARE
-app.use(morgan('dev')); 
-app.use(cors());
+http.createServer(function (req, res) {
+  handler(req, res, function (err) {
+    res.statusCode = 404;
+    res.end('no such location');
+  }).listen(config.port, function() {
+    console.log("Listening on port " + config.port + "!!!!!\n");
+    console.log("===============================================");
+  });
+});
 
-// ROUTING
-router.post("/webhook", webhook);
-
-// CONTROLLER FUNCTIONS
-function webhook(req, res) {
-  console.log("RECEIVING WEBHOOK ===========================>\n\n", req);
-};
-
-// LISTEN ON PORT
-app.listen(config.port);
+handler.on("push", function(event) {
+  console.log("Received webhook! Payload below =========================\n");
+  console.log(event.payload);
+});
