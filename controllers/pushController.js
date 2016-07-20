@@ -6,17 +6,16 @@ function create(req, res) {
   handler(req, res, function (err) {
     console.log(err);
   });
-  return res.end("Webhook payload received!");
 }
 
 handler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
+    event.payload.repository.full_name,
     event.payload.ref);
 
   var push = new Push({
     eventId: event.id,
-    timestamp: Date.now,
+    timestamp: Date.now(),
     repo: event.payload.repository.full_name,
     pusher: event.payload.pusher.name,
     payload: {
@@ -34,8 +33,8 @@ handler.on('push', function (event) {
   });
 
   push.save(function(err, push) {
-    if (err) return res.status(500).json(err);
-    res.status(200).json(push);
+    if (err) console.log(err);
+    console.log(push);
   });
 });
 

@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var pushSchema = mongoose.Schema({
-  id: String,
+  eventId: String,
   timestamp: { type: Date, default: Date.now },
   repo: String,
   pusher: String,
@@ -10,11 +10,11 @@ var pushSchema = mongoose.Schema({
     beforeSha: String,
     afterSha: String,
     diffUrl: String,
-    head: {
+    headCommit: {
       id: String,
-      tree_id: String,
+      treeId: String,
       message: String,
-      timestamp: String
+      timestamp: Date
     }
   }
 }); 
