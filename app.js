@@ -5,7 +5,7 @@ var express = require("express"),
     cors = require("cors");
 
 // INTERNAL REQUIREMENTS
-var config = require("./config/config");
+var config = require("config");
 
 // INITIALISE APP
 var app = express();
@@ -20,6 +20,8 @@ router.post("/webhook", webhook);
 
 // CONTROLLER FUNCTIONS
 function webhook(req, res) {
-  console.log("RECEIVING WEBHOOK: ", req);
-  debugger;
+  console.log("RECEIVING WEBHOOK ===========================>\n\n", req);
 };
+
+// LISTEN ON PORT
+app.listen(config.port);

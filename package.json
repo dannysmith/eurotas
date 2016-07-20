@@ -1,0 +1,19 @@
+{
+  "name": "eurotas",
+  "version": "1.0.0",
+  "description": "An app to be ued internally to automatically update and compile new curriculum additions",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannysmith/eurotas.git"
+  },
+  "author": "Danny Smith, Ollie Holden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dannysmith/eurotas/issues"
+  },
+  "homepage": "https://github.com/dannysmith/eurotas#readme"
+}
