@@ -1,3 +1,6 @@
+// EDITED FROM http://github.com/rvagg/github-webhook-handler, PR in progress
+
+
 const EventEmitter = require('events').EventEmitter
     , inherits     = require('util').inherits
     , crypto       = require('crypto')
