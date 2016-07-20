@@ -24,12 +24,28 @@
 //   console.log(event.payload);
 // });
 
-var gith = require("gith").create(3000);
+// var gith = require("gith").create(4040);
+var express = require("express");
+var app = express();
+var router = express.Router();
 
-gith({
-  repo: "odholden/eurotas-test"
-}).on("all", function(payload) {
+router.post('/', function(req, res) {
+  console.log("request happening =============================");
+  console.log(req);
+  return res.end("request successfully received!");
+});
+
+app.use('/', router);
+
+app.listen(3000, function() {
+  console.log("Listening on 3000");
   console.log("===============================================");
-  var log = (payload.branch === "master") ? payload : "incorrect branch!";
-  console.log(log);
-})
+});
+
+// gith({
+//   repo: "odholden/eurotas-test"
+// }).on("all", function(payload) {
+//   console.log("===============================================");
+//   var log = (payload.branch === "master") ? payload : "incorrect branch!";
+//   console.log(log);
+// })
