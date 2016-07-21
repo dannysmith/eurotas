@@ -15,7 +15,6 @@ handler.on('push', function (event) {
   // function to create a new tree in the target directory (replacing existing tree?!)
 });
 
-
 function handleWebhook(req, res) {
   return handler(req, res, function (err) {
     console.log(err);
@@ -51,27 +50,24 @@ function savePush(event) {
 function getTree(event) {
   var treeId = event.payload.head_commit.tree_id;
   var repo = event.payload.repository.full_name;
+  var uri = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
+
   console.log("\n=================================\n");
   console.log("Tree id: " + treeId);
   console.log("\n=================================\n");
   console.log("Repo: " + repo);
   console.log("\n=================================\n");
 
-  var uri = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
-
   var options = {
-      uri: uri,
-      qs: {
-          access_token: 'xxxxx xxxxx' // -> uri + '?access_token=xxxxx%20xxxxx' 
-      },
-      headers: {
-          'User-Agent': 'Request-Promise',
-          'username': ""
-      },
-      json: true // Automatically parses the JSON string in the response 
+    uri: uri,
+    headers: {
+      'User-Agent': 'Request-Promise',
+      'Authorization': "token" + config.github.apiKey
+    },
+    json: true
   };
 
-  return rp(url)
+  return rp(options)
     .then(function(data) {
       return console.log("returned from the github api: " + data);
     })
