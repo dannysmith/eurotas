@@ -12,22 +12,23 @@ handler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.full_name,
     event.payload.ref);
-
+  
+  var payload = event.payload;
   var push = new Push({
     eventId: event.id,
     timestamp: Date.now(),
-    repo: event.payload.repository.full_name,
-    pusher: event.payload.pusher.name,
+    repo: payload.repository.full_name,
+    pusher: payload.pusher.name,
     payload: {
-      ref: event.payload.ref,
-      beforeSha: event.payload.before,
-      afterSha: event.payload.after,
-      diffUrl: event.payload.compare,
+      ref: payload.ref,
+      beforeSha: payload.before,
+      afterSha: payload.after,
+      diffUrl: payload.compare,
       headCommit: {
-        id: event.payload.head_commit.id,
-        treeId: event.payload.head_commit.tree_id,
-        message: event.payload.head_commit.message,
-        timestamp: event.payload.head_commit.timestamp
+        id: payload.head_commit.id,
+        treeId: payload.head_commit.tree_id,
+        message: payload.head_commit.message,
+        timestamp: payload.head_commit.timestamp
       }
     }
   });
