@@ -1,28 +1,31 @@
 var rp = require("request-promise");
-
 var config = require("../config/config");
-var Push = require("../models/push");
+var output = require("./output");
 var createHandler = require("../config/webhookHandler");
+
+var Push = require("../models/push");
+var Tree = require("../models/tree");
+
 var handler = createHandler({ path: "/", secret: "rodney"});
 
 handler.on('push', function (event) {
-  console.log('Received a push event for %s to %s',
-    event.payload.repository.full_name,
-    event.payload.ref);
+  var payload = event.payload;
+  var treeId = payload.head_commit.tree_id;
+  var repo = payload.repository.full_name;
 
-  savePush(event);
-  getTree(event);
-  // function to create a new tree in the target directory (replacing existing tree?!)
+  console.log('\nReceived a push event from %s for %s', repo, treeId);
+
+  savePush(event, payload);
+  getTree(repo, treeId);
 });
 
-function handleWebhook(req, res) {
+function handle(req, res) {
   return handler(req, res, function (err) {
     console.log(err);
   });
 }
 
-function savePush(event) {
-  var payload = event.payload;
+function savePush(event, payload) {
   var push = new Push({
     eventId: event.id,
     timestamp: Date.now(),
@@ -47,33 +50,32 @@ function savePush(event) {
   });
 }
 
-function getTree(event) {
-  var treeId = event.payload.head_commit.tree_id;
-  var repo = event.payload.repository.full_name;
+function getTree(repo, treeId) {
   var uri = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
-
-  console.log("\n=================================\n");
-  console.log("Tree id: " + treeId);
-  console.log("\n=================================\n");
-  console.log("Repo: " + repo);
-  console.log("\n=================================\n");
-
   var options = {
     uri: uri,
     headers: {
       'User-Agent': 'Request-Promise',
-      'Authorization': "token" + config.github.apiKey
+      'Authorization': "token " + config.github.apiKey
     },
     json: true
   };
-
   return rp(options)
     .then(function(data) {
-      return console.log("returned from the github api: " + data);
+      saveTree(data);
+      output.updateRepo(data);
     })
     .catch(function(err) {
       return console.log(err);
     });
 }
 
-module.exports = { handleWebhook: handleWebhook };
+function saveTree(data) {
+  var tree = new Tree(data);
+  return tree.save(function(err, tree) {
+    if(err) console.log(err);
+    console.log("\nTree saved: " + tree); 
+  });
+}
+
+module.exports = { handle: handle };

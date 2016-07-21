@@ -1,8 +1,7 @@
 var express = require("express");
 var router = express.Router();
+var input = require("../controllers/input");
 
-var pushController = require("../controllers/pushController");
-
-router.post('/', pushController);
+router.post('/', input.handle);
 
 module.exports = router;
