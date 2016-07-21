@@ -1,5 +1,6 @@
 var rp = require("request-promise");
 
+var config = require("../config/config");
 var Push = require("../models/push");
 var createHandler = require("../config/webhookHandler");
 var handler = createHandler({ path: "/", secret: "rodney"});
@@ -11,7 +12,6 @@ handler.on('push', function (event) {
 
   savePush(event);
   getTree(event);
-  // function to extract tree id and use it to get tree from github api
   // function to create a new tree in the target directory (replacing existing tree?!)
 });
 
@@ -51,10 +51,26 @@ function savePush(event) {
 function getTree(event) {
   var treeId = event.payload.head_commit.tree_id;
   var repo = event.payload.repository.full_name;
+  console.log("\n=================================\n");
   console.log("Tree id: " + treeId);
+  console.log("\n=================================\n");
   console.log("Repo: " + repo);
+  console.log("\n=================================\n");
 
-  var url = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
+  var uri = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
+
+  var options = {
+      uri: uri,
+      qs: {
+          access_token: 'xxxxx xxxxx' // -> uri + '?access_token=xxxxx%20xxxxx' 
+      },
+      headers: {
+          'User-Agent': 'Request-Promise',
+          'username': ""
+      },
+      json: true // Automatically parses the JSON string in the response 
+  };
+
   return rp(url)
     .then(function(data) {
       return console.log("returned from the github api: " + data);
@@ -65,28 +81,3 @@ function getTree(event) {
 }
 
 module.exports = { handleWebhook: handleWebhook };
-
-
-
-// var rp       = require("request-promise");
-// var cheerio  = require("cheerio");
-// var config   = require("../config/config");
-
-// module.exports = {
-//   netaporter: netaporter
-// };
-
-// function netaporter(req, res) {
-//   return rp(req.body.url)
-//     .then(function(body) {
-//       var $ = cheerio.load(body);
-//       var text;
-//       $("ul.font-list-copy li").each(function() {
-//         if ($(this).toString().indexOf("%") > -1) text = $(this).text();
-//       });
-//       return res.send({text: text});
-//     })
-//     .catch(function(err) {
-//       return res.status(500).send(err);
-//     });
-// }
