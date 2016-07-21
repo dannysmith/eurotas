@@ -3,6 +3,6 @@ var router = express.Router();
 
 var pushController = require("../controllers/pushController");
 
-router.post('/', pushController.create);
+router.post('/', pushController);
 
 module.exports = router;
