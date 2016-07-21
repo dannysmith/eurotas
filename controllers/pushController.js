@@ -17,7 +17,7 @@ handler.on('push', function (event) {
 
 
 function handleWebhook(req, res) {
-  handler(req, res, function (err) {
+  return handler(req, res, function (err) {
     console.log(err);
   });
 }
@@ -42,7 +42,7 @@ function savePush(event) {
       }
     }
   });
-  push.save(function(err, push) {
+  return push.save(function(err, push) {
     if (err) console.log(err);
     console.log(push);
   });
@@ -50,7 +50,43 @@ function savePush(event) {
 
 function getTree(event) {
   var treeId = event.payload.head_commit.tree_id;
+  var repo = event.payload.repository.full_name;
+  console.log("Tree id: " + treeId);
+  console.log("Repo: " + repo);
 
+  var url = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
+  return rp(url)
+    .then(function(data) {
+      return console.log("returned from the github api: " + data);
+    })
+    .catch(function(err) {
+      return console.log(err);
+    });
 }
 
 module.exports = { handleWebhook: handleWebhook };
+
+
+
+// var rp       = require("request-promise");
+// var cheerio  = require("cheerio");
+// var config   = require("../config/config");
+
+// module.exports = {
+//   netaporter: netaporter
+// };
+
+// function netaporter(req, res) {
+//   return rp(req.body.url)
+//     .then(function(body) {
+//       var $ = cheerio.load(body);
+//       var text;
+//       $("ul.font-list-copy li").each(function() {
+//         if ($(this).toString().indexOf("%") > -1) text = $(this).text();
+//       });
+//       return res.send({text: text});
+//     })
+//     .catch(function(err) {
+//       return res.status(500).send(err);
+//     });
+// }
