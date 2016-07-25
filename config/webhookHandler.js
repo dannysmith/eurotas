@@ -1,5 +1,5 @@
 // EDITED FROM http://github.com/rvagg/github-webhook-handler, PR in progress
-
+// Removed JSON response to allow for use within our own custom middleware
 
 const EventEmitter = require('events').EventEmitter
     , inherits     = require('util').inherits
@@ -86,7 +86,7 @@ function create (options) {
       }
 
       // res.writeHead(200, { 'content-type': 'application/json' })
-      res.end('{"ok":true}')
+      // res.end('{"ok":true}')
 
       var emitData = {
           event   : event

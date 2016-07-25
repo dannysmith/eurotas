@@ -71,6 +71,8 @@ function getTree(repo, treeId) {
 }
 
 function saveTree(data) {
+  data.tree = JSON.parse(data.tree);
+  console.log("Neat data: " + data.tree);
   var tree = new Tree(data);
   return tree.save(function(err, tree) {
     if(err) console.log(err);
