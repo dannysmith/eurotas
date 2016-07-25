@@ -74,7 +74,7 @@ function saveTree(data) {
   return tree.save(function(err, tree) {
     if(err) console.log(err);
     console.log("\nTree saved: " + tree); 
-    return output.configurePost(tree);
+    return output.parseTree(tree.tree);
   });
 }
 

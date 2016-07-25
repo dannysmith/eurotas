@@ -3,8 +3,38 @@ var config = require("../config/config");
 
 var Tree = require("../models/tree");
 
-function configurePost(tree) {
-  console.log("\n=======================\nconfiguring post");
+function mapTrees(tree) {
+  var trees = [];
+  parseTree(tree);
+}
+
+function parseTree(tree) {
+  var parsedTree = tree.map(function(item) {
+    if (item.type === "blob") {
+      var uri = "https://api.github.com/repos/" + 
+            config.github.origin + 
+            "/git/blobs" + item.sha
+      return rp(uri)
+        .then(function(res) {
+          return {
+            path: item.path,
+            mode: item.mode,
+            type: item.type,
+            content: res.content
+          }
+        })
+        .catch(function(err) {
+          return console.log(err);
+        })
+    } else {
+
+    }
+  });
+  trees.push(parsedTree);
+  return configureRequest(parsedTree);
+}
+
+function configureRequest(parsedTree) {
   var uri = "https://api.github.com/repos/" + 
             config.github.destination + 
             "/git/trees";
@@ -15,10 +45,9 @@ function configurePost(tree) {
       'User-Agent': 'Request-Promise',
       'Authorization': "token " + config.github.apiKey
     },
-    body: { tree: tree },
+    body: { tree: parsedTree },
     json: true
   };
-  console.log("\n\nTree: " + tree + "\n\n");
   return postTree(options);
 }
 
@@ -32,4 +61,4 @@ function postTree(options) {
     });
 }
 
-module.exports = { configurePost: configurePost };
+module.exports = { parseTree: parseTree };
