@@ -13,7 +13,7 @@ function parseTree(tree) {
     if (item.type === "blob") {
       var uri = "https://api.github.com/repos/" + 
             config.github.origin + 
-            "/git/blobs" + item.sha
+            "/git/blobs/" + item.sha
       return rp(uri)
         .then(function(res) {
           return {
