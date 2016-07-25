@@ -7,10 +7,6 @@ var config = require("../config/config");
 var output = require("./output");
 var createHandler = require("../config/webhookHandler");
 
-var repo1 = config.github.origin.split("/")[1];
-var repo2 = config.github.destination.split("/")[1];
-var temp = "temp" + Date.now().toString();
-
 var Push = require("../models/push");
 var Tree = require("../models/tree");
 
@@ -20,9 +16,10 @@ handler.on('push', function (event) {
   var payload = event.payload;
   var treeId = payload.head_commit.tree_id;
   var repo = payload.repository.full_name;
-  console.log('\nReceived a push event from %s for %s', repo, treeId);
+  var message = event.payload.head_commit.message;
+  console.log("\n" + message + "\n");
   savePush(event, payload);
-  return runBash();
+  return runBash(repo, message);
   // getTree(repo, treeId);
 });
 
@@ -57,34 +54,35 @@ function savePush(event, payload) {
   });
 }
 
-function runBash() {
-  console.log("repo1: " + repo1);
-  console.log("fullrepo1: " + config.github.origin);
-  console.log("repo2: " + repo2);
-  console.log("fullrepo2: " + config.github.destination);
-  console.log("temp: " + temp);
+function runBash(origin, message) {
+  var repo1 = origin.split("/")[1];
+  var repo2 = config.github.destination.split("/")[1];
+  var temp = "temp" + Date.now().toString();
 
-  var bashScript = "mkdir " + temp + " && " + 
+  var bashScript = "mkdir " + temp + " &&" + 
                    " cd " + temp + " &&" + 
-                   " git clone git@github.com:" + config.github.origin + ".git &&" + 
+                   " git clone git@github.com:" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
-                   " mv *[^imported] imported &&" +
+                   " shopt -s extglob &&" +
+                   " mv * imported || true &&" +
                    " git add . &&" + 
-                   " git commit -m 'committed first repo changes' &&" +
+                   " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
                    " git clone git@github.com:" + config.github.destination + ".git &&" +
                    " cd " + repo2 + " &&" +
+                   " rm -rf ./* &&" +
                    " git remote add imports ../" + repo1 + " &&" +
                    " git pull imports master &&" + 
                    " git push origin master &&" +
                    " cd .. &&" +
                    " cd .. &&" +
                    " rm -rf " + temp;
-  child = exec(bashScript, function (error, output, error) { 
+  child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
     if (error !== null) console.log('exec error: ' + error);
+    console.log("=========================================");
   });
 }
 
