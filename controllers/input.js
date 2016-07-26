@@ -83,4 +83,11 @@ function runBash(origin, message) {
   });
 }
 
-module.exports = { handle: handle };
+function landingPage(req, res) {
+  res.send({ message: "This app is designed for a POST request only."});
+}
+
+module.exports = { 
+  handle: handle,
+  landingPage: landingPage
+};
