@@ -4,11 +4,9 @@ var exec = require("child_process").exec;
 var child;
 
 var config = require("../config/config");
-var output = require("./output");
 var createHandler = require("../config/webhookHandler");
 
 var Push = require("../models/push");
-var Tree = require("../models/tree");
 
 var handler = createHandler({ path: "/", secret: "rodney"});
 
@@ -20,7 +18,6 @@ handler.on('push', function (event) {
   console.log("\n" + message + "\n");
   savePush(event, payload);
   return runBash(repo, message);
-  // getTree(repo, treeId);
 });
 
 function handle(req, res) {
@@ -85,40 +82,5 @@ function runBash(origin, message) {
     console.log("=========================================");
   });
 }
-
-
-
-
-
-
-// function getTree(repo, treeId) {
-//   var uri = "https://api.github.com/repos/" + repo + "/git/trees/" + treeId;
-//   var options = {
-//     uri: uri,
-//     headers: {
-//       'User-Agent': 'Request-Promise',
-//       'Authorization': "token " + config.github.apiKey
-//     },
-//     json: true
-//   };
-//   return rp(options)
-//     .then(function(data) {
-//       return saveTree(data);
-//     })
-//     .catch(function(err) {
-//       return console.log(err);
-//     });
-// }
-
-// function saveTree(data) {
-//   var tree = new Tree(data);
-//   return tree.save(function(err, tree) {
-//     if(err) console.log(err);
-//     console.log("\nTree saved: " + tree); 
-//     return output.parseTree(tree.tree);
-//   });
-// }
-
-
 
 module.exports = { handle: handle };

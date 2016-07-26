@@ -4,5 +4,5 @@ module.exports = {
     "destination": process.env.GITHUB_DESTINATION_REPO
   },
   "port": process.env.PORT || 3000,
-  "database": "mongodb://localhost:27017/eurotas"
+  "database": process.env.MONGOLAB_URI || process.env.DATABASE
 };
