@@ -58,7 +58,7 @@ function runBash(origin, message) {
 
   var bashScript = "mkdir " + temp + " &&" + 
                    " cd " + temp + " &&" + 
-                   " git clone git@github.com:" + origin + ".git &&" + 
+                   " git clone https://odholden:stanley568@github.com/" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
@@ -67,14 +67,14 @@ function runBash(origin, message) {
                    " git add . &&" + 
                    " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
-                   " git clone git@github.com:" + config.github.destination + ".git &&" +
+                   " git clone https://odholden:stanley568@github.com/" + config.github.destination + ".git &&" +
                    " cd " + repo2 + " &&" +
                    " rm -rf ./* &&" +
                    " git remote add imports ../" + repo1 + " &&" +
                    " git pull imports master &&" + 
                    " git push origin master &&" +
                    " cd .. &&" +
-                   " cd .. &&" +
+                   " cd ..";
                    " rm -rf " + temp;
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
