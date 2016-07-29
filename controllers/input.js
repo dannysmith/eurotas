@@ -62,7 +62,6 @@ function runBash(origin, message) {
                    " cd " + repo1 + " &&" +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
-                   " shopt -s extglob &&" +
                    " mv * imported || true &&" +
                    " git add . &&" + 
                    " git commit -m '" + message + "' &&" +
@@ -72,9 +71,9 @@ function runBash(origin, message) {
                    " rm -rf ./* &&" +
                    " git remote add imports ../" + repo1 + " &&" +
                    " git pull imports master &&" + 
-                   " git push origin master &&" +
+                   // " git push origin master &&" +
                    " cd .. &&" +
-                   " cd ..";
+                   " cd .." + 
                    " rm -rf " + temp;
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
