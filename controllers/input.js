@@ -62,6 +62,8 @@ function runBash(origin, message) {
 
   var bashScript = "mkdir " + temp + " &&" + 
                    " cd " + temp + " &&" + 
+                   ' git config --global user.email "odholden@gmail.com"' +
+                   ' git config --global user.name "Oliver Holden"' +
                    " git clone https://" + userPass + "@github.com/" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
                    " git remote rm origin &&" +
@@ -77,8 +79,6 @@ function runBash(origin, message) {
                    " git add -A &&" +
                    " git commit -m '" + message + "' &&" +
                    ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
-                   ' git config user.email "odholden@gmail.com"' +
-                   ' git config user.name "Oliver Holden"' +
                    " git push https://" + userPass + "@github.com/" + dest + ".git --all" +
                    " cd .. &&" +
                    " cd .. &&" +
