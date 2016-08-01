@@ -58,8 +58,8 @@ function runBash(origin, message) {
   var password = config.github.password;
   var email = config.github.email;
   var name = config.github.name;
-  var userPass = username + ":" + password;
   var dest = config.github.destination;
+  var userPass = username + ":" + password;
   var temp = "temp" + Date.now().toString();
 
   var bashScript = "mkdir " + temp + " &&" + 
