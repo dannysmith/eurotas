@@ -7,6 +7,5 @@ module.exports = {
     "email": process.env.GITHUB_EMAIL,
     "name": process.env.GITHUB_NAME
   },
-  "port": process.env.PORT || 3000,
-  "database": process.env.MONGODB_URI || 'mongodb://localhost:27017/eurotas'
+  "port": process.env.PORT || 3000
 };
