@@ -62,10 +62,10 @@ function runBash(origin, message) {
 
   var bashScript = "mkdir " + temp + " &&" + 
                    " cd " + temp + " &&" + 
-                   ' git config --global user.email "odholden@gmail.com"' +
-                   ' git config --global user.name "Oliver Holden"' +
                    " git clone https://" + userPass + "@github.com/" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
+                   ' git config --global user.email "odholden@gmail.com"' +
+                   ' git config --global user.name "Oliver Holden"' +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
                    " mv * imported || true &&" +
@@ -76,6 +76,8 @@ function runBash(origin, message) {
                    " rm -rf "+ repo2 +"/* &&" +
                    " cp -R " + repo1 + "/* " + repo2 + " &&" +
                    " cd " + repo2 + " &&" +
+                   ' git config --global user.email "odholden@gmail.com"' +
+                   ' git config --global user.name "Oliver Holden"' +
                    " git add -A &&" +
                    " git commit -m '" + message + "' &&" +
                    ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
