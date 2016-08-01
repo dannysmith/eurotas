@@ -77,7 +77,10 @@ function runBash(origin, message) {
                    " git add -A &&" +
                    " git commit -m '" + message + "' &&" +
                    ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
-                   " git push https://" + userPass + "@github.com/" + dest + ".git --all";
+                   " git push https://" + userPass + "@github.com/" + dest + ".git --all" +
+                   " cd .. &&" +
+                   " cd .. &&" +
+                   " rm -rf " + temp;
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
     if (error !== null) console.log('exec error: ' + error);
