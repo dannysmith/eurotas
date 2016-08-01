@@ -54,7 +54,9 @@ function savePush(event, payload) {
 function runBash(origin, message) {
   var repo1 = origin.split("/")[1];
   var repo2 = config.github.destination.split("/")[1];
-  var userPass = config.github.username + ":" + config.github.password;
+  var username = config.github.username;
+  var password = config.github.password;
+  var userPass = username + ":" + password;
   var dest = config.github.destination;
   var temp = "temp" + Date.now().toString();
 
@@ -72,6 +74,9 @@ function runBash(origin, message) {
                    " rm -rf "+ repo2 +"/* &&" +
                    " cp -R " + repo1 + "/* " + repo2 + " &&" +
                    " cd " + repo2 + " &&" +
+                   " git add -A &&" +
+                   " git commit -m '" + message + "' &&" +
+                   ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
                    " git push https://" + userPass + "@github.com/" + dest + ".git --all";
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
