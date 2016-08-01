@@ -29,7 +29,7 @@ app.listen(config.port, function() {
 var handler = createHandler({ path: "/", secret: "rodney"});
 
 handler.on('push', function (event) {
-  var repo = payload.repository.full_name;
+  var repo = event.payload.repository.full_name;
   var message = event.payload.head_commit.message;
   console.log("\n" + message + "\n");
   return runBash(repo, message);
