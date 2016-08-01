@@ -87,6 +87,7 @@ function runBash(origin, message) {
                    " rm -rf " + temp;
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
+    console.log('stderr:' + stderr);
     if (error !== null) console.log('exec error: ' + error);
     console.log("=========================================");
   });
