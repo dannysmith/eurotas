@@ -81,7 +81,7 @@ function runBash(origin, message) {
                    " git add -A &&" +
                    " git commit -m '" + message + "' &&" +
                    ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
-                   " git push https://" + userPass + "@github.com/" + dest + ".git --all" +
+                   " git push origin master" +
                    " cd .. &&" +
                    " cd .. &&" +
                    " rm -rf " + temp;
