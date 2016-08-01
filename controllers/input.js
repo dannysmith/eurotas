@@ -56,6 +56,8 @@ function runBash(origin, message) {
   var repo2 = config.github.destination.split("/")[1];
   var username = config.github.username;
   var password = config.github.password;
+  var email = config.github.email;
+  var name = config.github.name;
   var userPass = username + ":" + password;
   var dest = config.github.destination;
   var temp = "temp" + Date.now().toString();
@@ -64,8 +66,8 @@ function runBash(origin, message) {
                    " cd " + temp + " &&" + 
                    " git clone https://" + userPass + "@github.com/" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
-                   ' git config user.email "odholden@gmail.com" &&' +
-                   ' git config user.name "Oliver Holden" &&' +
+                   ' git config user.email "' + email + '" &&' +
+                   ' git config user.name "' + name + '" &&' +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
                    " mv * imported || true &&" +
@@ -76,8 +78,8 @@ function runBash(origin, message) {
                    " rm -rf "+ repo2 +"/* &&" +
                    " cp -R " + repo1 + "/* " + repo2 + " &&" +
                    " cd " + repo2 + " &&" +
-                   ' git config user.email "odholden@gmail.com" &&' +
-                   ' git config user.name "Oliver Holden" &&' +
+                   ' git config user.email "' + email + '" &&' +
+                   ' git config user.name "' + name + '" &&' +
                    " git add -A &&" +
                    " git commit -m '" + message + "' &&" +
                    ' echo "machine github.com login ' + username + ' password ' + password + '" >> ~/.netrc &&' +
