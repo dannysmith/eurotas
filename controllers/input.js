@@ -54,11 +54,13 @@ function savePush(event, payload) {
 function runBash(origin, message) {
   var repo1 = origin.split("/")[1];
   var repo2 = config.github.destination.split("/")[1];
+  var userPass = config.github.username + ":" + config.github.password;
+  var dest = config.github.destination;
   var temp = "temp" + Date.now().toString();
 
   var bashScript = "mkdir " + temp + " &&" + 
                    " cd " + temp + " &&" + 
-                   " git clone https://odholden:stanley568@github.com/" + origin + ".git &&" + 
+                   " git clone https://" + userPass + "@github.com/" + origin + ".git &&" + 
                    " cd " + repo1 + " &&" +
                    " git remote rm origin &&" +
                    " mkdir imported &&" +
@@ -66,15 +68,11 @@ function runBash(origin, message) {
                    " git add . &&" + 
                    " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
-                   " git clone https://odholden:stanley568@github.com/" + config.github.destination + ".git &&" +
+                   " git clone https://" + userPass + "@github.com/" + dest + ".git &&" +
+                   " rm -rf "+ repo2 +"/* &&" +
+                   " cp -R " + repo1 + "/* " + repo2 + " &&" +
                    " cd " + repo2 + " &&" +
-                   " rm -rf ./* &&" +
-                   " git remote add imports ../" + repo1 + " &&" +
-                   " git pull imports master &&" + 
-                   // " git push origin master &&" +
-                   " cd .. &&" +
-                   " cd .." + 
-                   " rm -rf " + temp;
+                   " git push https://" + userPass + "@github.com/" + dest + ".git --all";
   child = exec(bashScript, function (stderr, output, error) { 
     console.log('output: ' + output);
     if (error !== null) console.log('exec error: ' + error);
