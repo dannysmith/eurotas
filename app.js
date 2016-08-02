@@ -100,7 +100,7 @@ function parseFilePath(filePath) {
     }
   }
   var string = array.join(" ");
-  return string + "mv * " + currentPath.join("") + " && "; 
+  return string + "mv * " + currentPath.join("") + " || true && "; 
 }
 
 // Landing page for GET request
