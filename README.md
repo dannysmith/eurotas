@@ -21,11 +21,12 @@ Ensure the following:
 3. Add [this buildpack](https://github.com/zeke/github-buildpack) using the command ```heroku buildpacks:add --index 1 https://github.com/zeke/github-buildpack```
 4. Using the `heroku config:set` command, add the following config variables to your Heroku app: 
   - GITHUB\_AUTH\_TOKEN, your Github API key
-  - GITHUB_DESTINATION_REPO, the repo to push to in the format \<USERNAME\>/\<REPO NAME\>
+  - GITHUB\_DESTINATION\_REPO, the repo to push to in the format \<USERNAME\>/\<REPO NAME\>
   - GITHUB_NAME, the name connected to your Github account
   - GITHUB_EMAIL, the email address connected to your Github account
   - GITHUB_USERNAME, your Github username
-  - GITHUB_PASSWORD, your Github password.
+  - GITHUB_PASSWORD, your Github password
+  - DESTINATION_DIRECTORY, an optional parameter for selecting a destination directory path. It should be either the name of a directory, or a path in the format \<DIRECTORY\>/\<NESTED DIRECTORY\> to the necessary depth.
 5. On Github, in the Settings tab of the original repo, add a webhook with the url of the Heroku app you have created.
 
 Done! Whenever a push is made to the original repo, the folder structure will be copied into the second repo. Nifty!
