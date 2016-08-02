@@ -21,7 +21,7 @@ Ensure the following:
 3. Add [this buildpack](https://github.com/zeke/github-buildpack) using the command ```heroku buildpacks:add --index 1 https://github.com/zeke/github-buildpack```
 4. Using the `heroku config:set` command, add the following config variables to your Heroku app: 
   - GITHUB\_AUTH\_TOKEN, your Github API key
-  - GITHUB_DESTINATION_REPO, the repo to push to in the format <USERNAME>/<REPO NAME>
+  - GITHUB_DESTINATION_REPO, the repo to push to in the format \<USERNAME\>/\<REPO NAME\>
   - GITHUB_NAME, the name connected to your Github account
   - GITHUB_EMAIL, the email address connected to your Github account
   - GITHUB_USERNAME, your Github username
