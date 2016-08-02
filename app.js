@@ -86,6 +86,7 @@ function runBash(origin, message) {
 }
 
 function parseFilePath(filePath) {
+  if (!filePath) return "";
   var dirs = filePath.split("/");
   var array = [];
   for (var i = 0; i < dirs.length; i++) {
