@@ -5,7 +5,8 @@ module.exports = {
     "username": process.env.GITHUB_USERNAME,
     "password": process.env.GITHUB_PASSWORD,
     "email": process.env.GITHUB_EMAIL,
-    "name": process.env.GITHUB_NAME
+    "name": process.env.GITHUB_NAME,
+    "filePath": process.env.DESTINATION_DIRECTORY
   },
   "port": process.env.PORT || 3000
 };

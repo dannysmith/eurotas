@@ -50,6 +50,7 @@ function runBash(origin, message) {
   var email = config.github.email;
   var name = config.github.name;
   var dest = config.github.destination;
+  var filePath = config.github.filePath;
   var userPass = username + ":" + password;
   var temp = "temp" + Date.now().toString();
 
@@ -59,9 +60,7 @@ function runBash(origin, message) {
                    " cd " + repo1 + " &&" +
                    ' git config user.email "' + email + '" &&' +
                    ' git config user.name "' + name + '" &&' +
-                   " git remote rm origin &&" +
-                   " mkdir imported &&" +
-                   " mv * imported || true &&" +
+                   " git remote rm origin &&" + parseFilePath(filePath) +
                    " git add . &&" + 
                    " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
@@ -84,6 +83,24 @@ function runBash(origin, message) {
     if (error !== null) console.log('exec error: ' + error);
     console.log("=========================================");
   });
+}
+
+function parseFilePath(filePath) {
+  var dirs = filePath.split("/");
+  var array = [];
+  for (var i = 0; i < dirs.length; i++) {
+    if (i > 0) {
+      var currentPath = [];
+      for (var j = i; j >= 0; j--) {
+        currentPath.unshift(dirs[j] + "/")
+      }
+      array.push("mkdir " + currentPath.join("") + " && ")
+    } else {
+      array.push("mkdir " + dirs[i] + " && ");
+    }
+  }
+  var string = array.join(" ");
+  return string + "mv * " + currentPath.join("") + " && "; 
 }
 
 // Landing page for GET request
