@@ -1,6 +1,5 @@
 // External requirements
 var express = require("express");
-var mongoose = require("mongoose");
 var rp = require("request-promise");
 var util = require("util");
 var exec = require("child_process").exec;
@@ -54,14 +53,14 @@ function runBash(origin, message) {
   var userPass = username + ":" + password;
   var temp = "temp" + Date.now().toString();
 
-  var bashScript = "mkdir " + temp + " &&" + 
-                   " cd " + temp + " &&" + 
-                   " git clone https://" + userPass + "@github.com/" + origin + ".git &&" + 
+  var bashScript = "mkdir " + temp + " &&" +
+                   " cd " + temp + " &&" +
+                   " git clone https://" + userPass + "@github.com/" + origin + ".git &&" +
                    " cd " + repo1 + " &&" +
                    ' git config user.email "' + email + '" &&' +
                    ' git config user.name "' + name + '" &&' +
                    " git remote rm origin &&" + parseFilePath(filePath) +
-                   " git add . &&" + 
+                   " git add . &&" +
                    " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
                    " git clone https://" + userPass + "@github.com/" + dest + ".git &&" +
@@ -77,7 +76,7 @@ function runBash(origin, message) {
                    " cd .. &&" +
                    " cd .. &&" +
                    " rm -rf " + temp;
-  child = exec(bashScript, function (stderr, output, error) { 
+  child = exec(bashScript, function (stderr, output, error) {
     console.log('output: ' + output);
     console.log('stderr:' + stderr);
     if (error !== null) console.log('exec error: ' + error);
@@ -101,7 +100,7 @@ function parseFilePath(filePath) {
     }
   }
   var string = array.join(" ");
-  return string + "mv * " + currentPath.join("") + " || true && "; 
+  return string + "mv * " + currentPath.join("") + " || true && ";
 }
 
 // Landing page for GET request
