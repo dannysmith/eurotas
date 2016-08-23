@@ -27,7 +27,8 @@ Ensure the following:
   - GITHUB_USERNAME, your Github username
   - GITHUB_PASSWORD, your Github password
   - DESTINATION_DIRECTORY, an optional parameter for selecting a destination directory path. It should be either the name of a directory, or a path in the format \<DIRECTORY\>/\<NESTED DIRECTORY\> to the necessary depth.
-5. On Github, in the Settings tab of the original repo, add a webhook with the url of the Heroku app you have created.
+  - GITHUB_WEBHOOK_SECRET, the secret you entered when you set up your WebHook on GitHub.
+5. On Github, in the Settings tab of the original repo, add a webhook with the url of the Heroku app you have created and an appropriate secret.
 
 Done! Whenever a push is made to the original repo, the folder structure will be copied into the second repo. Nifty!
 

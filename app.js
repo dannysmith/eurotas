@@ -25,7 +25,7 @@ app.listen(config.port, function() {
 });
 
 // Webhook handler
-var handler = createHandler({ path: "/", secret: "rodney"});
+var handler = createHandler({ path: "/", secret: config.github.secret});
 
 handler.on('push', function (event) {
   var repo = event.payload.repository.full_name;
