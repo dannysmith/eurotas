@@ -6,7 +6,7 @@ module.exports = {
     "password": process.env.GITHUB_PASSWORD,
     "email": process.env.GITHUB_EMAIL,
     "name": process.env.GITHUB_NAME,
-    "filePath": process.env.DESTINATION_DIRECTORY
+    "filePath": process.env.DESTINATION_DIRECTORY,
     "secret": process.env.GITHUB_WEBHOOK_SECRET
   },
   "port": process.env.PORT || 3000
