@@ -3,7 +3,6 @@ var express = require("express");
 var rp = require("request-promise");
 var util = require("util");
 var exec = require("child_process").exec;
-var child;
 
 // Initialize app
 var app = express();
@@ -42,16 +41,16 @@ function handle(req, res) {
 
 // Bash command for heroku
 function runBash(origin, message) {
-  var repo1 = origin.split("/")[1];
-  var repo2 = config.github.destination.split("/")[1];
-  var username = config.github.username;
-  var password = config.github.password;
-  var email = config.github.email;
-  var name = config.github.name;
-  var dest = config.github.destination;
-  var filePath = config.github.filePath;
-  var userPass = username + ":" + password;
-  var temp = "temp" + Date.now().toString();
+  var repo1 = origin.split("/")[1],
+      repo2 = config.github.destination.split("/")[1],
+      username = config.github.username,
+      password = config.github.password,
+      email = config.github.email,
+      name = config.github.name,
+      dest = config.github.destination,
+      fileMap = config.github.fileMap,
+      userPass = username + ":" + password,
+      temp = "temp" + Date.now().toString();
 
   var bashScript = "mkdir " + temp + " &&" +
                    " cd " + temp + " &&" +
@@ -59,7 +58,7 @@ function runBash(origin, message) {
                    " cd " + repo1 + " &&" +
                    ' git config user.email "' + email + '" &&' +
                    ' git config user.name "' + name + '" &&' +
-                   " git remote rm origin &&" + parseFilePath(filePath) +
+                   " git remote rm origin &&" + moveFiles(fileMap) +
                    " git add . &&" +
                    " git commit -m '" + message + "' &&" +
                    " cd .. &&" +
@@ -76,7 +75,7 @@ function runBash(origin, message) {
                    " cd .. &&" +
                    " cd .. &&" +
                    " rm -rf " + temp;
-  child = exec(bashScript, function (stderr, output, error) {
+  return exec(bashScript, function (stderr, output, error) {
     console.log('output: ' + output);
     console.log('stderr:' + stderr);
     if (error !== null) console.log('exec error: ' + error);
@@ -84,17 +83,17 @@ function runBash(origin, message) {
   });
 }
 
-function parseFilePath(filePath) {
-  if (!filePath) return "";
-  var dirs = filePath.split("/");
+function moveFiles(fileMap) {
+  if (!fileMap) return "";
+  var dirs = fileMap.split("/");
   var array = [];
   for (var i = 0; i < dirs.length; i++) {
     if (i > 0) {
       var currentPath = [];
       for (var j = i; j >= 0; j--) {
-        currentPath.unshift(dirs[j] + "/")
+        currentPath.unshift(dirs[j] + "/");
       }
-      array.push("mkdir " + currentPath.join("") + " && ")
+      array.push("mkdir " + currentPath.join("") + " && ");
     } else {
       array.push("mkdir " + dirs[i] + " && ");
     }
@@ -107,3 +106,49 @@ function parseFilePath(filePath) {
 function landingPage(req, res) {
   res.send({ message: "This app is designed for a POST request only."});
 }
+
+// var filewalker = require('filewalker');
+// var path = require('path');
+// var pry = require('pryjs');
+// var exec = require('child_process').exec;
+
+// var findStarterFiles = function(rootDir, fileMap, callback) {
+//   results = []
+//   filewalker(rootDir)
+//     .on('dir', function(f) {
+//       match = f.match(fileMap)
+//       if (match) {
+//         results.push({
+//           path: path.resolve(rootDir, match[0]),
+//           captures: match.slice(1)
+//         })
+//       }
+//     })
+//     .on('error', function(err) {
+//       console.error(err);
+//     })
+//     .on('done', function() {
+//       callback(results);
+//     })
+//   .walk();
+// }
+
+// var copyFiles = function(sourceRootDir, resultsArray) {
+//   command = ""
+//   for (p in resultsArray) {
+//     command += "mkdir -p " + path.resolve(sourceRootDir, resultsArray[p].captures.join('/')) + " && cp -rf " + resultsArray[p].path + "/ $_ && "
+//   }
+//   command += "echo 'Done Copying'"
+//   exec(command, function(error, stdout, stderr) {
+//     console.log(stdout);
+//   });
+// }
+
+// var sourceRootDir = path.resolve(__dirname, 'curriculum-newdev')
+// var destinationRootDir = path.resolve(__dirname, 'starter-code')
+// var fileMap = /trainer-guides\/([^\.].*)\/([0-9]+-.+)\/exercises\/(.+)_startercode$/
+
+// findStarterFiles(sourceRootDir, fileMap, function(res) {
+//   copyFiles(destinationRootDir, res)
+// });
+
