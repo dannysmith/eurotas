@@ -13,6 +13,8 @@ var app = express();
 // Internal requirements
 var config = require("./config/config");
 
+debugger;
+
 var destinationRepo = config.github.destination.split("/")[1],
     fileMap = config.github.fileMap,
     username = config.github.username,
@@ -60,6 +62,7 @@ function runBash(origin, message) {
       sourceRootDir = path.resolve(__dirname, originRepo),
       destinationRootDir = path.resolve(__dirname, destinationRepo);
 
+  debugger;
   var bashScript = "mkdir " + temp + " &&" +
                    " cd " + temp + " &&" +
                    " git clone https://" + userPass + "@github.com/" + origin + ".git &&" +
@@ -153,4 +156,3 @@ var generateBash = function(sourceRootDir, resultsArray) {
 moveFiles(sourceRootDir, fileMap, function(res) {
   return generateBash(destinationRootDir, res);
 });
-
